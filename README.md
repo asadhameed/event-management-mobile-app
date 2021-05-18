@@ -12,6 +12,8 @@ This command will install all the dependency packages in the node_modules direct
 
 ### `npm install --save @react-navigation/stack @react-navigation/native`
 
+### `expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view`
+
 React Navigation is made up of some core utilities and those are then used by navigators to create the navigation structure in your app.
 
 More help [React Navigation] (https://reactnavigation.org/docs/getting-started)
