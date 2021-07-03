@@ -1,0 +1,72 @@
+import React from "react";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons/";
+
+import LoginScreen from "./src/screens/LoginScreen";
+import RegisterScreen from "./src/screens/RegisterScreen";
+import DashBoard from "./src/screens/DashBoard";
+
+import {
+  LOGIN_SCREEN,
+  REGISTER_SCREEN,
+  DASHBOARD_SCREEN,
+} from "./src/StringOfApp";
+
+const Stack = createStackNavigator();
+const BottomTab = createBottomTabNavigator();
+
+const AuthNavigation = () => {
+  return (
+    <Stack.Navigator initialRouteName={LOGIN_SCREEN}>
+      <Stack.Screen name={LOGIN_SCREEN} component={LoginScreen} />
+      <Stack.Screen
+        name={REGISTER_SCREEN}
+        component={RegisterScreen}
+        options={{
+          headerLeft: () => null,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const DashBoardNavigation = () => {
+  return (
+    <Stack.Navigator initialRouteName={DASHBOARD_SCREEN}>
+      <Stack.Screen name={DASHBOARD_SCREEN} component={DashBoard} />
+    </Stack.Navigator>
+  );
+};
+const MainNavigationScreen = () => {
+  return (
+    <NavigationContainer>
+      <BottomTab.Navigator initialRouteName={"dash_navigation"}>
+        <BottomTab.Screen
+          name={"dash_navigation"}
+          component={DashBoardNavigation}
+          options={{
+            title: "Dash Board",
+            tabBarIcon: () => (
+              <MaterialIcons name="dashboard" size={24} color="#af70a6" />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Log_In"
+          component={AuthNavigation}
+          options={{
+            title: "Log In",
+            tabBarIcon: () => (
+              <AntDesign name="login" size={24} color="#af70a6" />
+            ),
+          }}
+        />
+      </BottomTab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default MainNavigationScreen;
