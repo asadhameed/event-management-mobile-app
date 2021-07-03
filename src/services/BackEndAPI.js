@@ -12,8 +12,7 @@ export const useHttpClient = () => {
         headers,
         body,
       });
-      if (response.status === 200) return await response.json();
-      else throw new Error("Something wrong");
+      return response;
     } catch (error) {
       console.log(
         "🚀 ~ file: BackEndAPI.js ~ line 17 ~ useHttpClient ~ error",

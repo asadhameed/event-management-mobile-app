@@ -24,15 +24,17 @@ const LoginScreen = ({ navigation }) => {
     setLogInError();
     if (isInputValid) {
       try {
-        const data = await sendRequest(
+        const response = await sendRequest(
           "user/login",
           "POST",
           { "Content-Type": "Application/json" },
           JSON.stringify({ email, password })
         );
+        const token = response.headers.get("x-auth-token");
+        const user = await response.json();
         console.log(
-          "🚀 ~ file: LoginScreen.js ~ line 31 ~ onLogInHandler ~ data",
-          data
+          "🚀 ~ file: LoginScreen.js ~ line 35 ~ onLogInHandler ~ user",
+          user
         );
         navigation.navigate(DASHBOARD_SCREEN);
       } catch (error) {
