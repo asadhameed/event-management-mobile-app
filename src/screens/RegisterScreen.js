@@ -4,13 +4,12 @@ import {
   View,
   StyleSheet,
   TextInput,
-  ImageBackground,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { LOGIN_SCREEN } from "../StringOfApp";
 import { useHttpClient } from "../services/BackEndAPI";
-const mgBackground = require("../../assets/background.jpg");
+import BackGroundImage from "../components/BackGroundImage";
 
 const RegisterScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
@@ -47,101 +46,83 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // console.log(
-  //   "🚀 ~ file: RegisterScreen.js ~ line 50 ~ onRegisterHandler ~ API_URL",
-  //   API_URL
-  // );
   return (
-    <View style={styles.container}>
-      <ImageBackground style={styles.imageBackground} source={mgBackground}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>Event's App</Text>
-          <View style={styles.form}>
-            <Text style={styles.label}>First Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="First Name"
-              placeholderTextColor="rgba(256,256,256,0.4)"
-              autoCorrect={false}
-              autoCapitalize="none"
-              value={firstName}
-              onChangeText={setFirstName}
-            />
-            <Text style={styles.label}>Last Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Last Name"
-              placeholderTextColor="rgba(256,256,256,0.4)"
-              autoCorrect={false}
-              autoCapitalize="none"
-              value={lastName}
-              onChangeText={setLastName}
-            />
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="rgba(256,256,256,0.4)"
-              keyboardType="email-address"
-              autoCorrect={false}
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-            />
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry
-              autoCapitalize="none"
-              placeholder="Password"
-              placeholderTextColor="rgba(256,256,256,0.4)"
-              autoCorrect={false}
-              value={password}
-              onChangeText={setPassword}
-            />
-            <Text style={styles.label}>Confirm Password</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry
-              placeholder="Confirm Password"
-              placeholderTextColor="rgba(256,256,256,0.4)"
-              autoCorrect={false}
-              autoCapitalize="none"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-            />
-            <TouchableOpacity onPress={onRegisterHandler}>
-              <Text style={styles.button}>Create Account</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate(LOGIN_SCREEN)}>
-              <Text
-                style={[
-                  styles.button,
-                  { backgroundColor: "#337ab7", width: "40%" },
-                ]}
-              >
-                Log In
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </ImageBackground>
-    </View>
+    <BackGroundImage>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>Event's App</Text>
+        <View style={styles.form}>
+          <Text style={styles.label}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="First Name"
+            placeholderTextColor="rgba(256,256,256,0.4)"
+            autoCorrect={false}
+            autoCapitalize="none"
+            value={firstName}
+            onChangeText={setFirstName}
+          />
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Last Name"
+            placeholderTextColor="rgba(256,256,256,0.4)"
+            autoCorrect={false}
+            autoCapitalize="none"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="rgba(256,256,256,0.4)"
+            keyboardType="email-address"
+            autoCorrect={false}
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry
+            autoCapitalize="none"
+            placeholder="Password"
+            placeholderTextColor="rgba(256,256,256,0.4)"
+            autoCorrect={false}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <Text style={styles.label}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry
+            placeholder="Confirm Password"
+            placeholderTextColor="rgba(256,256,256,0.4)"
+            autoCorrect={false}
+            autoCapitalize="none"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+          <TouchableOpacity onPress={onRegisterHandler}>
+            <Text style={styles.button}>Create Account</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate(LOGIN_SCREEN)}>
+            <Text
+              style={[
+                styles.button,
+                { backgroundColor: "#337ab7", width: "60%" },
+              ]}
+            >
+              Log In
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </BackGroundImage>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageBackground: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "stretch",
-  },
   title: {
     fontSize: 26,
     fontWeight: "bold",
@@ -180,7 +161,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     padding: 5,
-    width: "60%",
+    width: "70%",
     backgroundColor: "#af70a6",
     color: "#fff",
   },
