@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <BackGroundImage>
       <View style={styles.header}>
-        <Text style={styles.title}>Event's App</Text>
+        <Text style={styles.title}>Log In</Text>
       </View>
       <View style={styles.form}>
         <Text style={styles.label}>Email</Text>
@@ -130,9 +130,8 @@ const styles = StyleSheet.create({
   form: {
     flex: 8,
     alignContent: "stretch",
-    justifyContent: "center",
     paddingHorizontal: 35,
-    marginTop: 15,
+    marginTop: 30,
   },
   title: {
     fontSize: 26,

@@ -49,7 +49,7 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <BackGroundImage>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Event's App</Text>
+        <Text style={styles.title}>User Registration</Text>
         <View style={styles.form}>
           <Text style={styles.label}>First Name</Text>
           <TextInput
@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "bold",
-    marginVertical: 10,
+    marginVertical: 5,
     alignSelf: "center",
   },
   form: {
     alignContent: "stretch",
     paddingHorizontal: 35,
-    marginTop: 15,
+    marginTop: 10,
   },
   label: {
     color: "#ffffff",
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     height: 40,
     borderRadius: 4,
-    marginBottom: 20,
+    marginBottom: 15,
     backgroundColor: "rgba(0,0,0,0.3)",
   },
   button: {

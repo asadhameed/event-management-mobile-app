@@ -17,15 +17,24 @@ import {
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
-
+const APP_HEADER = {
+  title: "Event's Sport",
+  headerTitleAlign: "center",
+};
 const AuthNavigation = () => {
   return (
     <Stack.Navigator initialRouteName={LOGIN_SCREEN}>
-      <Stack.Screen name={LOGIN_SCREEN} component={LoginScreen} />
+      <Stack.Screen
+        name={LOGIN_SCREEN}
+        component={LoginScreen}
+        options={APP_HEADER}
+      />
       <Stack.Screen
         name={REGISTER_SCREEN}
         component={RegisterScreen}
         options={{
+          title: APP_HEADER.title,
+          headerTitleAlign: APP_HEADER.headerTitleAlign,
           headerLeft: () => null,
         }}
       />
@@ -36,7 +45,11 @@ const AuthNavigation = () => {
 const DashBoardNavigation = () => {
   return (
     <Stack.Navigator initialRouteName={DASHBOARD_SCREEN}>
-      <Stack.Screen name={DASHBOARD_SCREEN} component={DashBoard} />
+      <Stack.Screen
+        name={DASHBOARD_SCREEN}
+        component={DashBoard}
+        options={APP_HEADER}
+      />
     </Stack.Navigator>
   );
 };
@@ -48,7 +61,6 @@ const MainNavigationScreen = () => {
           name={"dash_navigation"}
           component={DashBoardNavigation}
           options={{
-            title: "Dash Board",
             tabBarIcon: () => (
               <MaterialIcons name="dashboard" size={24} color="#af70a6" />
             ),
@@ -58,7 +70,6 @@ const MainNavigationScreen = () => {
           name="Log_In"
           component={AuthNavigation}
           options={{
-            title: "Log In",
             tabBarIcon: () => (
               <AntDesign name="login" size={24} color="#af70a6" />
             ),
