@@ -14,9 +14,15 @@ This command will install all the dependency packages in the node_modules direct
 
 ### `expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view`
 
-React Navigation is made up of some core utilities and those are then used by navigators to create the navigation structure in your app.
+React Navigation is made up of some core utilities and those are then used by navigators to create the navigation structure in your app.\
 
-More help [React Navigation] (https://reactnavigation.org/docs/getting-started)
+More help [React Navigation](https://reactnavigation.org/docs/getting-started)
+
+### `npm install --save react-native-dotenv`
+
+This babel plugin lets you inject your environment variables into your react-native environment using dotenv for multiple environments.\
+
+More help [React Native DotEnv](https://www.npmjs.com/package/react-native-dotenv)
 
 ### `npm start`
 

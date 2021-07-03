@@ -3,13 +3,13 @@ import {
   Text,
   View,
   StyleSheet,
-  Input,
   TextInput,
   ImageBackground,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { LOGIN_SCREEN } from "../StringOfApp";
+import { useHttpClient } from "../services/BackEndAPI";
 const mgBackground = require("../../assets/background.jpg");
 
 const RegisterScreen = ({ navigation }) => {
@@ -17,35 +17,40 @@ const RegisterScreen = ({ navigation }) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState();
-  const onRegisterHandler = () => {
+  const [confirmPassword, setConfirmPassword] = useState();
+  const { sendRequest } = useHttpClient();
+  const onRegisterHandler = async () => {
     try {
-      console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 23 ~ onRegisterHandler ~ firstName",
-        firstName
+      const body = JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+      });
+      const headers = { "Content-Type": "Application/json" };
+      const response = await sendRequest(
+        "user/registration",
+        "POST",
+        headers,
+        body
       );
-
       console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 26 ~ onRegisterHandler ~ lastName",
-        lastName
-      );
-
-      console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 27 ~ onRegisterHandler ~ password",
-        password
-      );
-
-      console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 33 ~ onRegisterHandler ~ email",
-        email
+        "🚀 ~ file: RegisterScreen.js ~ line 42 ~ onRegisterHandler ~ response",
+        response
       );
     } catch (error) {
       console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 26 ~ onRegisterHandler ~ error",
+        "🚀 ~ file: RegisterScreen.js ~ line 42 ~ onRegisterHandler ~ error",
         error
       );
     }
   };
+
+  // console.log(
+  //   "🚀 ~ file: RegisterScreen.js ~ line 50 ~ onRegisterHandler ~ API_URL",
+  //   API_URL
+  // );
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.imageBackground} source={mgBackground}>
@@ -102,8 +107,8 @@ const RegisterScreen = ({ navigation }) => {
               placeholderTextColor="rgba(256,256,256,0.4)"
               autoCorrect={false}
               autoCapitalize="none"
-              value={confPassword}
-              onChangeText={setConfPassword}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
             />
             <TouchableOpacity onPress={onRegisterHandler}>
               <Text style={styles.button}>Create Account</Text>
