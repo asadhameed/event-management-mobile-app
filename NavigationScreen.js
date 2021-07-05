@@ -8,11 +8,13 @@ import { AntDesign, MaterialIcons } from "@expo/vector-icons/";
 import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import DashBoard from "./src/screens/DashBoard";
+import EventScreen from "./src/screens/EventScreen";
 
 import {
   LOGIN_SCREEN,
   REGISTER_SCREEN,
   DASHBOARD_SCREEN,
+  EVENT_SCREEN,
 } from "./src/StringOfApp";
 
 const Stack = createStackNavigator();
@@ -50,6 +52,11 @@ const DashBoardNavigation = () => {
         component={DashBoard}
         options={APP_HEADER}
       />
+      <Stack.Screen
+        name={EVENT_SCREEN}
+        component={EventScreen}
+        options={APP_HEADER}
+      />
     </Stack.Navigator>
   );
 };
@@ -61,6 +68,7 @@ const MainNavigationScreen = () => {
           name={"dash_navigation"}
           component={DashBoardNavigation}
           options={{
+            title: "Dash Board",
             tabBarIcon: () => (
               <MaterialIcons name="dashboard" size={24} color="#af70a6" />
             ),
@@ -70,6 +78,7 @@ const MainNavigationScreen = () => {
           name="Log_In"
           component={AuthNavigation}
           options={{
+            title: "Log In",
             tabBarIcon: () => (
               <AntDesign name="login" size={24} color="#af70a6" />
             ),
