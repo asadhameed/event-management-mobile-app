@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,6 +17,7 @@ import {
   REGISTER_SCREEN,
   DASHBOARD_SCREEN,
   EVENT_SCREEN,
+  AUTH_TAB,
 } from "./src/StringOfApp";
 
 const Stack = createStackNavigator();
@@ -63,7 +64,10 @@ const DashBoardNavigation = () => {
   );
 };
 const MainNavigationScreen = () => {
-  const { isLogin } = useContext(AuthContext);
+  const { isLogin, tryLocalLogin } = useContext(AuthContext);
+  useEffect(() => {
+    tryLocalLogin();
+  }, []);
   const authContext = useContext(AuthContext);
   console.log(
     "file: NavigationScreen.js ~ line 67 ~ MainNavigationScreen ~ authContext",
@@ -96,7 +100,7 @@ const MainNavigationScreen = () => {
         )}
         {!isLogin && (
           <BottomTab.Screen
-            name="Log_In"
+            name={AUTH_TAB}
             component={AuthNavigation}
             options={{
               title: "Log In",

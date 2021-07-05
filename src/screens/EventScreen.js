@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import BackGroundImage from "../components/BackGroundImage";
 import Inputs from "../components/formElements/Inputs";
+import { AuthContext } from "../contexts/AuthContext";
+import { AUTH_TAB } from "../StringOfApp";
 
 const EventScreen = ({ navigation, route }) => {
+  const { isLogin } = useContext(AuthContext);
   const { event } = route.params;
   return (
     <BackGroundImage>
@@ -19,11 +22,22 @@ const EventScreen = ({ navigation, route }) => {
               <Inputs title="Event Date" info={event.eventType} />
               <Inputs title="Event price" info={`${event.price} $`} />
             </View>
-            <View style={styles.register}>
-              <TouchableOpacity onPress={() => console.log("YOu press ")}>
-                <Text style={styles.registerText}>Register</Text>
-              </TouchableOpacity>
-            </View>
+            {isLogin && (
+              <View style={styles.register}>
+                <TouchableOpacity onPress={() => console.log("YOu press ")}>
+                  <Text style={styles.registerText}>Register</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {!isLogin && (
+              <View style={styles.register}>
+                <TouchableOpacity onPress={() => navigation.navigate(AUTH_TAB)}>
+                  <Text style={styles.loginResterText}>
+                    To Register for event. Please Login or SignUp
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
           <View>
             <Text style={{ fontWeight: "bold" }}>Description </Text>
@@ -71,6 +85,11 @@ const styles = StyleSheet.create({
   },
   registerText: {
     fontSize: 30,
+    textAlign: "center",
+    marginTop: 5,
+  },
+  loginResterText: {
+    fontSize: 15,
     textAlign: "center",
     marginTop: 5,
   },
