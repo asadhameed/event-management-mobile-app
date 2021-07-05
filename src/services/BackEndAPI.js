@@ -15,7 +15,7 @@ export const useHttpClient = () => {
       return response;
     } catch (error) {
       console.log(
-        "🚀 ~ file: BackEndAPI.js ~ line 17 ~ useHttpClient ~ error",
+        "file: BackEndAPI.js ~ line 17 ~ useHttpClient ~ error",
         error
       );
       throw error;

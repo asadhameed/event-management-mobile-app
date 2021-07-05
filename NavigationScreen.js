@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -9,6 +9,8 @@ import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import DashBoard from "./src/screens/DashBoard";
 import EventScreen from "./src/screens/EventScreen";
+import SettingScreen from "./src/screens/SettingScreen";
+import { AuthContext } from "./src/contexts/AuthContext";
 
 import {
   LOGIN_SCREEN,
@@ -61,6 +63,13 @@ const DashBoardNavigation = () => {
   );
 };
 const MainNavigationScreen = () => {
+  const { isLogin } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  console.log(
+    "file: NavigationScreen.js ~ line 67 ~ MainNavigationScreen ~ authContext",
+    authContext
+  );
+
   return (
     <NavigationContainer>
       <BottomTab.Navigator initialRouteName={"dash_navigation"}>
@@ -74,16 +83,29 @@ const MainNavigationScreen = () => {
             ),
           }}
         />
-        <BottomTab.Screen
-          name="Log_In"
-          component={AuthNavigation}
-          options={{
-            title: "Log In",
-            tabBarIcon: () => (
-              <AntDesign name="login" size={24} color="#af70a6" />
-            ),
-          }}
-        />
+        {isLogin && (
+          <BottomTab.Screen
+            name="Setting"
+            component={SettingScreen}
+            options={{
+              tabBarIcon: () => (
+                <MaterialIcons name="settings" size={24} color="#af70a6" />
+              ),
+            }}
+          />
+        )}
+        {!isLogin && (
+          <BottomTab.Screen
+            name="Log_In"
+            component={AuthNavigation}
+            options={{
+              title: "Log In",
+              tabBarIcon: () => (
+                <AntDesign name="login" size={24} color="#af70a6" />
+              ),
+            }}
+          />
+        )}
       </BottomTab.Navigator>
     </NavigationContainer>
   );

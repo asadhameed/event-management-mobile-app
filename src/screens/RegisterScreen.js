@@ -35,12 +35,12 @@ const RegisterScreen = ({ navigation }) => {
         body
       );
       console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 42 ~ onRegisterHandler ~ response",
+        "file: RegisterScreen.js ~ line 42 ~ onRegisterHandler ~ response",
         response
       );
     } catch (error) {
       console.log(
-        "🚀 ~ file: RegisterScreen.js ~ line 42 ~ onRegisterHandler ~ error",
+        "file: RegisterScreen.js ~ line 42 ~ onRegisterHandler ~ error",
         error
       );
     }

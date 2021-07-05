@@ -30,6 +30,30 @@ A simple tab bar on the bottom of the screen that lets you switch between differ
 
 More help [React Navigation Bottom Tabs](https://reactnavigation.org/docs/bottom-tab-navigator)
 
+### `npm install --save @react-native-picker/picker`
+
+Picker is a cross-platform UI component for selecting an item from a list of options. \
+
+More help [React Native Picker](https://github.com/react-native-picker/picker)
+
+### `npm i react-native-action-button --save`
+
+customizable multi-action-button component for react-native. \
+
+More help [React Native Action Button](https://github.com/mastermoo/react-native-action-button)
+
+### `expo install expo-image-picker`
+
+expo-image-picker provides access to the system's UI for selecting images and videos from the phone's library or taking a photo with the camera. \
+
+More help [Expo image picker](https://docs.expo.io/versions/latest/sdk/imagepicker/)
+
+### `npm install @react-native-async-storage/async-storage`
+
+An asynchronous, unencrypted, persistent, key-value storage system for React Native. \
+
+More help [React Native Async-storage](https://github.com/react-native-async-storage/async-storage)
+
 ### `npm start`
 
 Runs the app in the development mode.<br />

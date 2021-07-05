@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
   eventContainer: {
     flexDirection: "column",
     alignItems: "stretch",
-    borderWidth: 2,
+    borderWidth: 3,
     borderRadius: 20,
     borderColor: "#6e9aa1",
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: "rgba(256,256,256,0.5)",
     margin: 10,
   },
   header: {
