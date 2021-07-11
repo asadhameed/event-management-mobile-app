@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import BackGroundImage from "../components/BackGroundImage";
 import Inputs from "../components/formElements/Inputs";
@@ -7,7 +8,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { AUTH_TAB } from "../StringOfApp";
 
 const EventScreen = ({ navigation, route }) => {
-  const { isLogin } = useContext(AuthContext);
+  const { isLogin, user } = useContext(AuthContext);
   const { event } = route.params;
   return (
     <BackGroundImage>
@@ -22,9 +23,39 @@ const EventScreen = ({ navigation, route }) => {
               <Inputs title="Event Date" info={event.eventType} />
               <Inputs title="Event price" info={`${event.price} $`} />
             </View>
-            {isLogin && (
+            {isLogin && user === event.user && (
+              <View>
+                {/* <TouchableOpacity
+                  onPress={() => console.log("You want edit the event ")}
+                >
+                  <Text style={styles.registerText}>
+                    <MaterialIcons
+                      name="edit"
+                      size={30}
+                      color="rgb(192,64,175)"
+                    />
+                  </Text>
+                </TouchableOpacity> */}
+                <TouchableOpacity
+                  onPress={() => console.log("You Want delete the event ")}
+                >
+                  <Text style={styles.registerText}>
+                    <MaterialIcons
+                      name="delete"
+                      size={60}
+                      color="rgb(192,64,175)"
+                    />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {isLogin && user !== event.user && (
               <View style={styles.register}>
-                <TouchableOpacity onPress={() => console.log("YOu press ")}>
+                <TouchableOpacity
+                  onPress={() =>
+                    console.log("You want Register for this event")
+                  }
+                >
                   <Text style={styles.registerText}>Register</Text>
                 </TouchableOpacity>
               </View>
