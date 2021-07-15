@@ -5,8 +5,10 @@ import { Ionicons as Icon } from "@expo/vector-icons";
 
 import BackGroundImage from "../components/BackGroundImage";
 import EventComponent from "../components/EventComponent";
+import ModalComponent from "../components/ModalComponent";
 
 const DashBoard = ({ navigation }) => {
+  const [modelIsVisible, setModelIsVisible] = useState(false);
   const [events, setEvents] = useState([
     {
       _id: "5fb4c4cfda6a860017aa0749",
@@ -53,11 +55,17 @@ const DashBoard = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
+      {modelIsVisible && (
+        <ModalComponent
+          modalVisible={modelIsVisible}
+          onCloseModal={() => setModelIsVisible(!modelIsVisible)}
+        />
+      )}
       <ActionButton buttonColor="rgb(192,64,175)" offsetY={0} offsetX={0}>
         <ActionButton.Item
           buttonColor="rgb(192,64,175)"
           title="New Event"
-          onPress={() => console.log("Create A new Event")}
+          onPress={() => setModelIsVisible(true)}
         >
           <Icon name="ios-create" size={80} style={styles.action} />
         </ActionButton.Item>

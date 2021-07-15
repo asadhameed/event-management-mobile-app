@@ -4,8 +4,11 @@ import mgBackground from "../../assets/background.jpg";
 
 const BackGroundImage = (props) => {
   return (
-    <View style={styles.container}>
-      <ImageBackground style={styles.imageBackground} source={mgBackground}>
+    <View style={{ ...styles.container, ...props.container }}>
+      <ImageBackground
+        style={{ ...styles.imageBackground, ...props.imageBackground }}
+        source={mgBackground}
+      >
         {props.children}
       </ImageBackground>
     </View>

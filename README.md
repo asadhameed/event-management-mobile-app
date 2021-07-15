@@ -2,6 +2,14 @@
 
 The front-end of the Mobile application of <strong>Event management</strong>. <br>
 
+## Error Or Warning
+
+1.  Animated: `useNativeDriver` was not specified issue of ReactNativeBase Input. \
+    <strong>Solution :- </strong> write the following code in app.js \
+     import { LogBox } from 'react-native' \
+     LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message \
+     LogBox.ignoreAllLogs(); \
+
 ## Available Scripts
 
 In the project directory, you can run:
