@@ -117,6 +117,8 @@ const ModalComponent = (props) => {
                       ...globalStyles.buttonStyle,
                       width: "100%",
                       marginVertical: 5,
+                      backgroundColor: "rgba(0,0,0,0.0)",
+                      borderWidth: 0,
                     }}
                   >
                     Event Image
