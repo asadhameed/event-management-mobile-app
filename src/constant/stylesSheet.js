@@ -1,0 +1,43 @@
+export default {
+  titleText: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginVertical: 5,
+    alignSelf: "center",
+  },
+  labelText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "400",
+    padding: 5,
+    marginBottom: 2,
+  },
+  form: {
+    alignContent: "stretch",
+    paddingHorizontal: 35,
+    marginTop: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ffffff",
+    paddingHorizontal: 10,
+    fontSize: 18,
+    fontWeight: "400",
+    borderRadius: 4,
+    marginBottom: 15,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  buttonStyle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginVertical: 10,
+    borderWidth: 2,
+    borderRadius: 20,
+    alignSelf: "center",
+    textAlign: "center",
+    padding: 10,
+    width: "70%",
+    backgroundColor: "#af70a6",
+    color: "#fff",
+  },
+};
