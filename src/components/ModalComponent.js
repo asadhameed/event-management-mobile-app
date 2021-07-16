@@ -10,7 +10,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-
+import { MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 
@@ -121,7 +121,7 @@ const ModalComponent = (props) => {
                       borderWidth: 0,
                     }}
                   >
-                    Event Image
+                    <MaterialIcons name="add-a-photo" size={60} />
                   </Text>
                 </TouchableOpacity>
                 {image && (
