@@ -125,6 +125,7 @@ const ModalComponent = (props) => {
                     <DateTimePicker
                       value={date}
                       mode="date"
+                      minimumDate={new Date(Date.now())}
                       onChange={onChangeDateHandler}
                     />
                   )}
