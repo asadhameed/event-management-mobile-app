@@ -159,29 +159,28 @@ const ModalComponent = (props) => {
                   />
                 )}
               </View>
-
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={{ flex: 1 }}
-                  onPress={props.onCloseModal}
-                >
-                  <Text
-                    style={{
-                      ...globalStyles.buttonStyle,
-                      backgroundColor: "#337ab7",
-                    }}
-                  >
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ flex: 1 }}
-                  onPress={() => onSaveHandler()}
-                >
-                  <Text style={globalStyles.buttonStyle}>Save</Text>
-                </TouchableOpacity>
-              </View>
             </ScrollView>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={props.onCloseModal}
+              >
+                <Text
+                  style={{
+                    ...globalStyles.buttonStyle,
+                    backgroundColor: "#337ab7",
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={() => onSaveHandler()}
+              >
+                <Text style={globalStyles.buttonStyle}>Save</Text>
+              </TouchableOpacity>
+            </View>
           </BackGroundImage>
         </View>
       </Modal>
@@ -210,8 +209,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   buttonContainer: {
-    marginTop: 20,
-    marginBottom: 40,
+    //  marginTop: 20,
+    marginBottom: 15,
     flexDirection: "row",
     justifyContent: "space-between",
   },
