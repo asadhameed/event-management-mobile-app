@@ -62,6 +62,12 @@ An asynchronous, unencrypted, persistent, key-value storage system for React Nat
 
 More help [React Native Async-storage](https://github.com/react-native-async-storage/async-storage)
 
+### `npm install @react-native-community/datetimepicker --save`
+
+React Native date & time picker component for iOS, Android and Windows. \
+
+More help [React Native Date Time Picker](https://github.com/react-native-datetimepicker/datetimepicker)
+
 ### `npm start`
 
 Runs the app in the development mode.<br />

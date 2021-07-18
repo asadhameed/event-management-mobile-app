@@ -10,9 +10,10 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Fontisto } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import BackGroundImage from "./BackGroundImage";
 import globalStyles from "../constant/stylesSheet";
@@ -25,6 +26,8 @@ const ModalComponent = (props) => {
   const [description, setDescription] = useState();
   const [eventType, setEventType] = useState("Running");
   const [image, setImage] = useState();
+  const [date, setDate] = useState(new Date(Date.now()));
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const onPickImageHandler = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -51,6 +54,11 @@ const ModalComponent = (props) => {
     setTitle("");
     setPrice("");
     setDescription("");
+  };
+  const onChangeDateHandler = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setDate(currentDate);
   };
   return (
     <ScrollView style={styles.centeredView}>
@@ -96,6 +104,32 @@ const ModalComponent = (props) => {
                   onChangeText={setPrice}
                 />
               </View>
+              <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                <View style={{ ...styles.viewContainer, flexDirection: "row" }}>
+                  <Text
+                    style={{
+                      ...styles.modalButton,
+                      width: "20%",
+                      textAlign: "left",
+                      padding: 5,
+                      marginLeft: 10,
+                    }}
+                  >
+                    <Fontisto name="date" size={25} />
+                  </Text>
+
+                  <Text style={globalStyles.labelText}>
+                    {date.toLocaleDateString()}
+                  </Text>
+                  {showDatePicker && (
+                    <DateTimePicker
+                      value={date}
+                      mode="date"
+                      onChange={onChangeDateHandler}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
               <Text style={globalStyles.labelText}>Event Type</Text>
               <View style={styles.pickerContainer}>
                 <Picker
@@ -110,18 +144,10 @@ const ModalComponent = (props) => {
                   <Picker.Item label="Cycling" value="cycling" />
                 </Picker>
               </View>
-              <View style={styles.imageContainer}>
+              <View style={styles.viewContainer}>
                 <TouchableOpacity onPress={onPickImageHandler}>
-                  <Text
-                    style={{
-                      ...globalStyles.buttonStyle,
-                      width: "100%",
-                      marginVertical: 5,
-                      backgroundColor: "rgba(0,0,0,0.0)",
-                      borderWidth: 0,
-                    }}
-                  >
-                    <MaterialIcons name="add-a-photo" size={60} />
+                  <Text style={styles.modalButton}>
+                    <MaterialIcons name="add-a-photo" size={50} />
                   </Text>
                 </TouchableOpacity>
                 {image && (
@@ -188,7 +214,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  imageContainer: {
+  viewContainer: {
     borderWidth: 1,
     borderColor: "#ffffff",
     borderRadius: 4,
@@ -210,11 +236,18 @@ const styles = StyleSheet.create({
   },
   picker: { flex: 1, ...globalStyles.labelText },
   pickerContainer: {
-    height: 50,
+    height: 40,
     borderColor: "#ffffff",
     backgroundColor: "rgba(0,0,0,0.3)",
     borderWidth: 1,
     borderRadius: 4,
+  },
+  modalButton: {
+    ...globalStyles.buttonStyle,
+    width: "100%",
+    marginVertical: 5,
+    backgroundColor: "rgba(0,0,0,0.0)",
+    borderWidth: 0,
   },
 });
 
