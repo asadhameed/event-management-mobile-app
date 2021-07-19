@@ -1,17 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import BackGroundImage from "../components/BackGroundImage";
 import Inputs from "../components/formElements/Inputs";
 import { AuthContext } from "../contexts/AuthContext";
-import { AUTH_TAB } from "../StringOfApp";
+import { AUTH_TAB, DASHBOARD_SCREEN } from "../StringOfApp";
+import { useHttpClient } from "../services/BackEndAPI";
+import AlertIndicator from "../components/formElements/AlertIndicator";
 
 const EventScreen = ({ navigation, route }) => {
-  const { isLogin, user } = useContext(AuthContext);
+  const { isLogin, user, token } = useContext(AuthContext);
   const { event } = route.params;
+  const { sendRequest } = useHttpClient();
+  const [isActiveIndicator, setIsActiveIndicator] = useState(false);
+
+  const onDeleteEventHandler = async () => {
+    setIsActiveIndicator(true);
+    const headers = { "x-auth-token": token };
+    const response = await sendRequest(`event/${event.id}`, "DELETE", headers);
+    console.log(response);
+    if (response.status === 204) {
+      navigation.navigate(DASHBOARD_SCREEN);
+    }
+    setIsActiveIndicator(false);
+  };
+
   return (
     <BackGroundImage>
+      {isActiveIndicator && (
+        <AlertIndicator isActiveIndicator={isActiveIndicator} />
+      )}
       <View style={styles.eventScreenContainer}>
         <Text style={styles.title}>{event.title}</Text>
         <Image style={styles.image} source={{ uri: event.thumbnail_url }} />
@@ -36,9 +55,7 @@ const EventScreen = ({ navigation, route }) => {
                     />
                   </Text>
                 </TouchableOpacity> */}
-                <TouchableOpacity
-                  onPress={() => console.log("You Want delete the event ")}
-                >
+                <TouchableOpacity onPress={onDeleteEventHandler}>
                   <Text style={styles.registerText}>
                     <MaterialIcons
                       name="delete"

@@ -23,6 +23,7 @@ const EventComponent = (props) => {
 
 const styles = StyleSheet.create({
   eventContainer: {
+    width: "98%",
     flexDirection: "column",
     alignItems: "stretch",
     borderWidth: 3,

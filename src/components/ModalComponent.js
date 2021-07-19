@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+
 import { MaterialIcons, Fontisto } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
@@ -17,17 +18,26 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import BackGroundImage from "./BackGroundImage";
 import globalStyles from "../constant/stylesSheet";
+import { AuthContext } from "../contexts/AuthContext";
+import { useHttpClient } from "../services/BackEndAPI";
+import AlertIndicator from "./formElements/AlertIndicator";
 
 const windowHight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 const ModalComponent = (props) => {
-  const [title, setTitle] = useState();
-  const [price, setPrice] = useState();
-  const [description, setDescription] = useState();
-  const [eventType, setEventType] = useState("Running");
-  const [image, setImage] = useState();
+  const [title, setTitle] = useState(null);
+  const [titleError, setTitleError] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [priceError, setPriceError] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [eventType, setEventType] = useState("running");
+  const [image, setImage] = useState(null);
   const [date, setDate] = useState(new Date(Date.now()));
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const authContext = useContext(AuthContext);
+  const { sendRequest } = useHttpClient();
+  const [isActiveIndicator, setIsActiveIndicator] = useState(false);
+
   const onPickImageHandler = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -38,28 +48,179 @@ const ModalComponent = (props) => {
     console.log(result);
     if (!result.cancelled) setImage(result.uri);
   };
-  const onSaveHandler = () => {
-    console.log(
-      "file: ModalComponent.js ~ line 25 ~ ModalComponent ~ title",
-      title
-    );
-    console.log(
-      "file: ModalComponent.js ~ line 28 ~ ModalComponent ~ price",
-      price
-    );
-    console.log(
-      "file: ModalComponent.js ~ line 33 ~ ModalComponent ~ description",
-      description
-    );
-    setTitle("");
-    setPrice("");
-    setDescription("");
+  const validationInputFields = () => {
+    let isValid = true;
+
+    if (!title) {
+      isValid = false;
+      setTitleError("Please give an event title");
+    } else {
+      setTitleError(null);
+    }
+    if (!price || price < 1) {
+      isValid = false;
+      setPriceError("Please gives price greater then zero");
+    } else {
+      setPriceError(null);
+    }
+
+    return isValid;
+  };
+  const onSaveHandler = async () => {
+    setIsActiveIndicator(true);
+    if (validationInputFields()) {
+      const body = { title, eventType, price, description, date };
+      const headers = {
+        "x-auth-token": authContext.token,
+        "Content-Type": "Application/json",
+      };
+      const response = await sendRequest(
+        "event",
+        "POST",
+        headers,
+        JSON.stringify(body)
+      );
+
+      // const responseData = await response.json();
+      //console.log(responseData);
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        setTitle(null);
+        setPrice(null);
+        setDescription(null);
+        setImage(null);
+        setDate(new Date(Date.now()));
+        setEventType("running");
+        props.onCloseModal();
+      }
+    }
+    setIsActiveIndicator(false);
   };
   const onChangeDateHandler = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
     setDate(currentDate);
   };
+
+  const eventView = () => {
+    return (
+      <>
+        <Text style={globalStyles.titleText}>Creat a new Event</Text>
+        <ScrollView style={globalStyles.form}>
+          <View>
+            <Text style={globalStyles.labelText}>Title</Text>
+            <TextInput
+              style={{ ...globalStyles.input, height: 40, marginBottom: 5 }}
+              placeholder="Event Title"
+              placeholderTextColor="rgba(256,256,256,0.4)"
+              autoCapitalize="none"
+              value={title}
+              onChangeText={setTitle}
+            />
+            <View style={{ marginBottom: 10 }}>
+              {titleError && <Text style={{ color: "red" }}>{titleError}</Text>}
+            </View>
+            <Text style={globalStyles.labelText}>Description</Text>
+            <TextInput
+              multiline={true}
+              numberOfLines={5}
+              style={globalStyles.input}
+              placeholder="Event Description"
+              placeholderTextColor="rgba(256,256,256,0.4)"
+              autoCapitalize="none"
+              value={description}
+              onChangeText={setDescription}
+            />
+            <Text style={globalStyles.labelText}>Price</Text>
+            <TextInput
+              style={{ ...globalStyles.input, height: 40, marginBottom: 5 }}
+              placeholder="Event Price in $00,00"
+              placeholderTextColor="rgba(256,256,256,0.4)"
+              autoCapitalize="none"
+              keyboardType="numeric"
+              value={price}
+              onChangeText={setPrice}
+            />
+            <View style={{ marginBottom: 10 }}>
+              {priceError && <Text style={{ color: "red" }}>{priceError}</Text>}
+            </View>
+          </View>
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <View style={{ ...styles.viewContainer, flexDirection: "row" }}>
+              <Text
+                style={{
+                  ...styles.modalButton,
+                  width: "20%",
+                  textAlign: "left",
+                  padding: 5,
+                  marginLeft: 10,
+                }}
+              >
+                <Fontisto name="date" size={25} />
+              </Text>
+
+              <Text style={globalStyles.labelText}>
+                {date.toLocaleDateString()}
+              </Text>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  minimumDate={new Date(Date.now())}
+                  onChange={onChangeDateHandler}
+                />
+              )}
+            </View>
+          </TouchableOpacity>
+          <Text style={globalStyles.labelText}>Event Type</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              onValueChange={(value) => setEventType(value)}
+              selectedValue={eventType}
+              style={styles.picker}
+              mode="dropdown"
+            >
+              <Picker.Item label="Running" value="running" />
+              <Picker.Item label="Walking" value="walking" />
+              <Picker.Item label="Swimming" value="swimming" />
+              <Picker.Item label="Cycling" value="cycling" />
+            </Picker>
+          </View>
+          <View style={styles.viewContainer}>
+            <TouchableOpacity onPress={onPickImageHandler}>
+              <Text style={styles.modalButton}>
+                <MaterialIcons name="add-a-photo" size={50} />
+              </Text>
+            </TouchableOpacity>
+            {image && (
+              <Image
+                source={{ uri: image }}
+                style={styles.image}
+                resizeMode="center"
+              />
+            )}
+          </View>
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={props.onCloseModal}>
+            <Text
+              style={{
+                ...globalStyles.buttonStyle,
+                backgroundColor: "#337ab7",
+              }}
+            >
+              Cancel
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => onSaveHandler()}>
+            <Text style={globalStyles.buttonStyle}>Save</Text>
+          </TouchableOpacity>
+        </View>
+      </>
+    );
+  };
+
   return (
     <ScrollView style={styles.centeredView}>
       <Modal
@@ -70,117 +231,11 @@ const ModalComponent = (props) => {
       >
         <View style={styles.modalView}>
           <BackGroundImage imageBackground={styles.imageBackground}>
-            <Text style={globalStyles.titleText}>Creat a new Event</Text>
-            <ScrollView style={globalStyles.form}>
-              <View>
-                <Text style={globalStyles.labelText}>Title</Text>
-                <TextInput
-                  style={{ ...globalStyles.input, height: 40 }}
-                  placeholder="Event Title"
-                  placeholderTextColor="rgba(256,256,256,0.4)"
-                  autoCapitalize="none"
-                  value={title}
-                  onChangeText={setTitle}
-                />
-                <Text style={globalStyles.labelText}>Description</Text>
-                <TextInput
-                  multiline={true}
-                  numberOfLines={5}
-                  style={globalStyles.input}
-                  placeholder="Event Description"
-                  placeholderTextColor="rgba(256,256,256,0.4)"
-                  autoCapitalize="none"
-                  value={description}
-                  onChangeText={setDescription}
-                />
-                <Text style={globalStyles.labelText}>Price</Text>
-                <TextInput
-                  style={{ ...globalStyles.input, height: 40 }}
-                  placeholder="Event Price in $00,00"
-                  placeholderTextColor="rgba(256,256,256,0.4)"
-                  autoCapitalize="none"
-                  keyboardType="numeric"
-                  value={price}
-                  onChangeText={setPrice}
-                />
-              </View>
-              <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                <View style={{ ...styles.viewContainer, flexDirection: "row" }}>
-                  <Text
-                    style={{
-                      ...styles.modalButton,
-                      width: "20%",
-                      textAlign: "left",
-                      padding: 5,
-                      marginLeft: 10,
-                    }}
-                  >
-                    <Fontisto name="date" size={25} />
-                  </Text>
-
-                  <Text style={globalStyles.labelText}>
-                    {date.toLocaleDateString()}
-                  </Text>
-                  {showDatePicker && (
-                    <DateTimePicker
-                      value={date}
-                      mode="date"
-                      minimumDate={new Date(Date.now())}
-                      onChange={onChangeDateHandler}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-              <Text style={globalStyles.labelText}>Event Type</Text>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  onValueChange={(value) => setEventType(value)}
-                  selectedValue={eventType}
-                  style={styles.picker}
-                  mode="dropdown"
-                >
-                  <Picker.Item label="Running" value="running" />
-                  <Picker.Item label="Walking" value="walking" />
-                  <Picker.Item label="Swimming" value="swimming" />
-                  <Picker.Item label="Cycling" value="cycling" />
-                </Picker>
-              </View>
-              <View style={styles.viewContainer}>
-                <TouchableOpacity onPress={onPickImageHandler}>
-                  <Text style={styles.modalButton}>
-                    <MaterialIcons name="add-a-photo" size={50} />
-                  </Text>
-                </TouchableOpacity>
-                {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={styles.image}
-                    resizeMode="center"
-                  />
-                )}
-              </View>
-            </ScrollView>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={{ flex: 1 }}
-                onPress={props.onCloseModal}
-              >
-                <Text
-                  style={{
-                    ...globalStyles.buttonStyle,
-                    backgroundColor: "#337ab7",
-                  }}
-                >
-                  Cancel
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ flex: 1 }}
-                onPress={() => onSaveHandler()}
-              >
-                <Text style={globalStyles.buttonStyle}>Save</Text>
-              </TouchableOpacity>
-            </View>
+            {isActiveIndicator ? (
+              <AlertIndicator isActiveIndicator={isActiveIndicator} />
+            ) : (
+              eventView()
+            )}
           </BackGroundImage>
         </View>
       </Modal>

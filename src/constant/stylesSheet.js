@@ -40,4 +40,9 @@ export default {
     backgroundColor: "#af70a6",
     color: "#fff",
   },
+  indicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 };
