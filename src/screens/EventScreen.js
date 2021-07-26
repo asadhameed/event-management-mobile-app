@@ -39,7 +39,7 @@ const EventScreen = ({ navigation, route }) => {
           <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 1 }}>
               <Inputs title="Type" info={event.eventType} />
-              <Inputs title="Event Date" info={event.eventType} />
+              <Inputs title="Event Date" info={event.date.toString()} />
               <Inputs title="Event price" info={`${event.price} $`} />
             </View>
             {isLogin && user === event.user && (

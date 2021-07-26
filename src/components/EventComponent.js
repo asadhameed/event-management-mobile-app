@@ -24,7 +24,7 @@ const EventComponent = (props) => {
       </View>
       <View style={styles.content}>
         <Inputs title="Type" info={props.event.eventType} />
-        <Inputs title="Event Date" info={props.event.eventType} />
+        <Inputs title="Event Date" info={props.event.date.toString()} />
         <Inputs title="Event price" info={`${props.event.price} $`} />
         {props.status && (
           <Inputs
