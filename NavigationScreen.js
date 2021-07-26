@@ -10,6 +10,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import DashBoard from "./src/screens/DashBoard";
 import EventScreen from "./src/screens/EventScreen";
 import SettingScreen from "./src/screens/SettingScreen";
+import SubscribedEventScreen from "./src/screens/SubscribedEventScreen";
 import { AuthContext } from "./src/contexts/AuthContext";
 
 import {
@@ -63,6 +64,17 @@ const DashBoardNavigation = () => {
     </Stack.Navigator>
   );
 };
+const SubscribedEventNavigation = () => {
+  return (
+    <Stack.Navigator initialRouteName="Subscribed Events">
+      <Stack.Screen
+        name={"Subscribed Events"}
+        component={SubscribedEventScreen}
+        options={APP_HEADER}
+      />
+    </Stack.Navigator>
+  );
+};
 const MainNavigationScreen = () => {
   const { isLogin, tryLocalLogin } = useContext(AuthContext);
   useEffect(() => {
@@ -87,6 +99,18 @@ const MainNavigationScreen = () => {
             ),
           }}
         />
+        {isLogin && (
+          <BottomTab.Screen
+            name="subscribe_navigation"
+            component={SubscribedEventNavigation}
+            options={{
+              title: "Subscribed Events",
+              tabBarIcon: () => (
+                <MaterialIcons name="subscriptions" size={24} color="#af70a6" />
+              ),
+            }}
+          />
+        )}
         {isLogin && (
           <BottomTab.Screen
             name="Setting"

@@ -17,6 +17,17 @@ export default {
     paddingHorizontal: 35,
     marginTop: 20,
   },
+  notFoundTextStyle: {
+    fontSize: 26,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginHorizontal: 20,
+    padding: 20,
+    borderWidth: 5,
+    borderRadius: 10,
+    borderColor: "#ffffff",
+    backgroundColor: "rgba(256, 256, 256, 0.4)",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ffffff",

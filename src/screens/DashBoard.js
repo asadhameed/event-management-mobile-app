@@ -116,12 +116,8 @@ const DashBoard = ({ navigation }) => {
     );
   };
 
-  return (
-    <BackGroundImage style={{}}>
-      {headerView()}
-      {isActiveIndicator && (
-        <AlertIndicator isActiveIndicator={isActiveIndicator} />
-      )}
+  const renderEvents = () => {
+    return events.length > 0 ? (
       <FlatList
         //   numColumns={2}
         showsVerticalScrollIndicator={false}
@@ -136,6 +132,21 @@ const DashBoard = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
+    ) : (
+      <Text style={globalStyle.notFoundTextStyle}>
+        There isn't define a event.
+      </Text>
+    );
+  };
+
+  return (
+    <BackGroundImage imageBackground={{ justifyContent: "flex-start" }}>
+      {headerView()}
+      {isActiveIndicator && (
+        <AlertIndicator isActiveIndicator={isActiveIndicator} />
+      )}
+
+      {!isActiveIndicator && renderEvents()}
       {modelIsVisible && (
         <ModalComponent
           modalVisible={modelIsVisible}
@@ -160,7 +171,7 @@ const DashBoard = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
-
+    alignSelf: "flex-start",
     // borderWidth: 2,
     //  borderRadius: 10,
     marginTop: 10,

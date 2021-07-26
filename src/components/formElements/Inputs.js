@@ -5,7 +5,7 @@ const Inputs = (props) => {
   return (
     <View style={styles.inputsContainer}>
       <Text style={styles.title}>{props.title}: </Text>
-      <Text style={styles.info}>{props.info}</Text>
+      <Text style={{ ...styles.info, ...props.style }}>{props.info}</Text>
     </View>
   );
 };

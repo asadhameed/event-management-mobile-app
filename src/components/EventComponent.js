@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import Inputs from "./formElements/Inputs";
 
 const EventComponent = (props) => {
+  const [color, setColor] = useState("blue");
+
+  useEffect(() => {
+    if (props.status === "Approved") {
+      setColor("green");
+    } else if (props.status === "Rejected") {
+      setColor("red");
+    }
+  }, []);
+
   return (
     <View style={styles.eventContainer}>
       <View style={styles.header}>
@@ -16,6 +26,9 @@ const EventComponent = (props) => {
         <Inputs title="Type" info={props.event.eventType} />
         <Inputs title="Event Date" info={props.event.eventType} />
         <Inputs title="Event price" info={`${props.event.price} $`} />
+        {props.status && (
+          <Inputs title="Status" info={props.status} style={{ color }} />
+        )}
       </View>
     </View>
   );
@@ -26,7 +39,7 @@ const styles = StyleSheet.create({
     width: "98%",
     flexDirection: "column",
     alignItems: "stretch",
-    borderWidth: 3,
+    borderWidth: 5,
     borderRadius: 20,
     borderColor: "#6e9aa1",
     backgroundColor: "rgba(256,256,256,0.5)",
