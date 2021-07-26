@@ -11,6 +11,7 @@ import DashBoard from "./src/screens/DashBoard";
 import EventScreen from "./src/screens/EventScreen";
 import SettingScreen from "./src/screens/SettingScreen";
 import SubscribedEventScreen from "./src/screens/SubscribedEventScreen";
+import ApprovalEventScreen from "./src/screens/ApprovalEventScreen";
 import { AuthContext } from "./src/contexts/AuthContext";
 
 import {
@@ -75,6 +76,30 @@ const SubscribedEventNavigation = () => {
     </Stack.Navigator>
   );
 };
+
+const ApprovalEventNavigation = () => {
+  return (
+    <Stack.Navigator initialRouteName="Approval Events">
+      <Stack.Screen
+        name={"Approval Events"}
+        component={ApprovalEventScreen}
+        options={APP_HEADER}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const SettingNavigation = () => {
+  return (
+    <Stack.Navigator initialRouteName="Setting">
+      <Stack.Screen
+        name={"Setting"}
+        component={SettingScreen}
+        options={APP_HEADER}
+      />
+    </Stack.Navigator>
+  );
+};
 const MainNavigationScreen = () => {
   const { isLogin, tryLocalLogin } = useContext(AuthContext);
   useEffect(() => {
@@ -99,6 +124,20 @@ const MainNavigationScreen = () => {
             ),
           }}
         />
+
+        {isLogin && (
+          <BottomTab.Screen
+            name="approval_navigation"
+            component={ApprovalEventNavigation}
+            options={{
+              title: "Approval Events",
+              tabBarIcon: () => (
+                <MaterialIcons name="approval" size={24} color="#af70a6" />
+              ),
+            }}
+          />
+        )}
+
         {isLogin && (
           <BottomTab.Screen
             name="subscribe_navigation"
@@ -111,11 +150,13 @@ const MainNavigationScreen = () => {
             }}
           />
         )}
+
         {isLogin && (
           <BottomTab.Screen
-            name="Setting"
-            component={SettingScreen}
+            name="setting-navigation"
+            component={SettingNavigation}
             options={{
+              title: "Setting",
               tabBarIcon: () => (
                 <MaterialIcons name="settings" size={24} color="#af70a6" />
               ),
