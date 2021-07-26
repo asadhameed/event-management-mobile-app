@@ -1,30 +1,50 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import BackGroundImage from "../components/BackGroundImage";
 import Inputs from "../components/formElements/Inputs";
 import { AuthContext } from "../contexts/AuthContext";
+import { EventContext } from "../contexts/EventContext";
 import { AUTH_TAB, DASHBOARD_SCREEN } from "../StringOfApp";
 import { useHttpClient } from "../services/BackEndAPI";
 import AlertIndicator from "../components/formElements/AlertIndicator";
 
 const EventScreen = ({ navigation, route }) => {
   const { isLogin, user, token } = useContext(AuthContext);
+  const eventContext = useContext(EventContext);
   const { event } = route.params;
   const { sendRequest } = useHttpClient();
   const [isActiveIndicator, setIsActiveIndicator] = useState(false);
+  const [eventStatus, setEventStatus] = useState();
+  const [statusTextColor, setStatusTextColor] = useState("blue");
 
   const onDeleteEventHandler = async () => {
     setIsActiveIndicator(true);
     const headers = { "x-auth-token": token };
     const response = await sendRequest(`event/${event.id}`, "DELETE", headers);
-    console.log(response);
+
     if (response.status === 204) {
       navigation.navigate(DASHBOARD_SCREEN);
     }
     setIsActiveIndicator(false);
   };
+
+  useEffect(() => {
+    const findEventSubscribed = eventContext.subscribedEvent.find(
+      (eventSub) => eventSub.event._id === event._id
+    );
+    if (!findEventSubscribed) setEventStatus(false);
+    else if (findEventSubscribed.approved) {
+      setEventStatus("Approved");
+      setStatusTextColor("green");
+    } else {
+      if (findEventSubscribed.approved === false) {
+        setEventStatus("Rejected");
+        setStatusTextColor("red");
+      } else setEventStatus("Pending");
+    }
+  }, []);
 
   return (
     <BackGroundImage>
@@ -66,7 +86,16 @@ const EventScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
               </View>
             )}
-            {isLogin && user !== event.user && (
+            {isLogin && eventStatus && (
+              <View>
+                <Text
+                  style={{ ...styles.eventStatusText, color: statusTextColor }}
+                >
+                  {eventStatus}
+                </Text>
+              </View>
+            )}
+            {isLogin && !eventStatus && user !== event.user && (
               <View style={styles.register}>
                 <TouchableOpacity
                   onPress={() =>
@@ -135,6 +164,17 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: "center",
     marginTop: 5,
+  },
+  eventStatusText: {
+    fontSize: 24,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginTop: 5,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: "#ffffff",
+    backgroundColor: "rgba(256, 256, 256, 0.6)",
+    padding: 5,
   },
   loginResterText: {
     fontSize: 15,

@@ -19,6 +19,7 @@ import EventComponent from "../components/EventComponent";
 import ModalComponent from "../components/ModalComponent";
 import { useHttpClient } from "../services/BackEndAPI";
 import { AuthContext } from "../contexts/AuthContext";
+import { EventContext } from "../contexts/EventContext";
 import AlertIndicator from "../components/formElements/AlertIndicator";
 import globalStyle from "../constant/stylesSheet";
 import { EVENT_SCREEN } from "../StringOfApp";
@@ -29,17 +30,18 @@ const DashBoard = ({ navigation }) => {
   const [isActiveIndicator, setIsActiveIndicator] = useState(false);
   const { sendRequest } = useHttpClient();
   const authContext = useContext(AuthContext);
+  const eventContext = useContext(EventContext);
+
   const isFocused = useIsFocused();
   const getAllEvent = async (query = "") => {
     setIsActiveIndicator(true);
     const response = await sendRequest(`events/${query}`);
     if (response.status === 200) {
       const responseDate = await response.json();
-      console.log(responseDate);
+
       setEvents(responseDate);
     }
     setIsActiveIndicator(false);
-    //  console.log(response);
   };
 
   const getEventByUser = async () => {
@@ -48,7 +50,7 @@ const DashBoard = ({ navigation }) => {
     const response = await sendRequest("event/byuser/", "GET", headers);
     if (response.status === 200) {
       const responseDate = await response.json();
-      // console.log(responseDate);
+
       setEvents(responseDate);
     }
     setIsActiveIndicator(false);
@@ -56,6 +58,13 @@ const DashBoard = ({ navigation }) => {
   useEffect(() => {
     getAllEvent();
   }, [modelIsVisible, isFocused]);
+
+  useEffect(() => {
+    if (authContext.isLogin) {
+      const headers = { "x-auth-token": authContext.token };
+      eventContext.getSubscribedEventsOfUser(headers);
+    }
+  }, [authContext.isLogin]);
 
   const headerView = () => {
     return (
