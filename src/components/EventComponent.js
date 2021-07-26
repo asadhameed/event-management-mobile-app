@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#6e9aa1",
     backgroundColor: "rgba(256,256,256,0.5)",
-    margin: 10,
+    margin: 2,
   },
   header: {
     flexDirection: "row",
