@@ -1,6 +1,30 @@
 # Project Description
 
-The front-end of the Mobile application of <strong>Event management</strong>. <br>
+The front-end of the Mobile application of <strong>Event management</strong>.
+
+The application has the following pages: \
+
+- The <strong>Dashboard</strong> Shows all events and user can filter the events by type.
+- <strong> Log in Page </strong> When click on login there two options 1. Log in 2. create Account
+- <strong> DeashBoard </strong> show all the events if user want to register for an event then user should login in the application. \
+- <strong> DeashBoard have a filter on top </strong> User can filter an events by(All, running, walking, swimming, biking) \
+  After log in \
+- <strong> DeashBoard </strong>User can create an event and also register for other user events. \
+- <strong> Approval Events</strong> User can accept or rejected other user events
+- <strong> Subscribed Events </strong> Shows the events which user is subscribed. See the status of the events.
+- <strong> setting</strong> User can logout.
+
+## For Live demo
+
+- Install Expo from Play store
+- Give the following project URLs in expo application \
+  or Scan QR Code of the following link from expo application
+
+`[Expo link ](https://expo.dev/@asadhameedafridi/sport-event)`
+
+## Setup with Back-end API
+
+`[Back-End Setup ](https://github.com/asadhameed/event-management-backend)`
 
 ## Error Or Warning
 
