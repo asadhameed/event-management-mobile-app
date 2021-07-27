@@ -1,18 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useIsFocused } from "@react-navigation/core";
 
+import { AuthContext } from "../contexts/AuthContext";
+import { EventContext } from "../contexts/EventContext";
 import Inputs from "./formElements/Inputs";
 
 const EventComponent = (props) => {
+  const [statusTextColor, setStatusTextColor] = useState("blue");
   const [color, setColor] = useState("blue");
+  const [eventStatus, setEventStatus] = useState();
+  const eventContext = useContext(EventContext);
+
+  const isFocused = useIsFocused();
+
+  const { event } = props;
 
   useEffect(() => {
+    const findEventSubscribed = eventContext.subscribedEvent.find(
+      (eventSub) => eventSub.event._id === event._id
+    );
+    if (!findEventSubscribed) setEventStatus(false);
+    else if (findEventSubscribed.approved) {
+      setEventStatus("Approved");
+      setStatusTextColor("green");
+    } else {
+      if (findEventSubscribed.approved === false) {
+        setEventStatus("Rejected");
+        setStatusTextColor("red");
+      } else setEventStatus("Pending");
+    }
+
     if (props.status === "Approved") {
       setColor("green");
     } else if (props.status === "Rejected") {
       setColor("red");
     } else setColor("blue");
-  }, [props.status]);
+  }, [props.status, event, isFocused]);
   return (
     <View style={styles.eventContainer}>
       <View style={styles.header}>
@@ -20,12 +44,24 @@ const EventComponent = (props) => {
           style={{ width: 60, height: 60, borderRadius: 15 }}
           source={{ uri: props.event.thumbnail_url }}
         ></Image>
-        <Text style={styles.title}>{props.event.title}</Text>
+        <Text style={styles.title}>{event.title}</Text>
+        {eventStatus && (
+          <Text
+            style={{
+              ...styles.eventTypeButton,
+              width: 0,
+              flex: 1,
+              backgroundColor: statusTextColor,
+            }}
+          >
+            {eventStatus}
+          </Text>
+        )}
       </View>
       <View style={styles.content}>
-        <Inputs title="Type" info={props.event.eventType} />
-        <Inputs title="Event Date" info={props.event.date.toString()} />
-        <Inputs title="Event price" info={`${props.event.price} $`} />
+        <Inputs title="Type" info={event.eventType} />
+        <Inputs title="Event Date" info={event.date.toString()} />
+        <Inputs title="Event price" info={`${event.price} $`} />
         {props.status && (
           <Inputs
             title="Status"
@@ -101,6 +137,7 @@ const styles = StyleSheet.create({
   },
   title: {
     margin: 10,
+    flex: 2,
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",

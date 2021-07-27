@@ -29,10 +29,10 @@ const DashBoard = ({ navigation }) => {
   const [events, setEvents] = useState([]);
   const [isActiveIndicator, setIsActiveIndicator] = useState(false);
   const { sendRequest } = useHttpClient();
-  const authContext = useContext(AuthContext);
+  const { isLogin, token } = useContext(AuthContext);
   const eventContext = useContext(EventContext);
-
   const isFocused = useIsFocused();
+
   const getAllEvent = async (query = "") => {
     setIsActiveIndicator(true);
     const response = await sendRequest(`events/${query}`);
@@ -46,7 +46,7 @@ const DashBoard = ({ navigation }) => {
 
   const getEventByUser = async () => {
     setIsActiveIndicator(true);
-    const headers = { "x-auth-token": authContext.token };
+    const headers = { "x-auth-token": token };
     const response = await sendRequest("event/byuser/", "GET", headers);
     if (response.status === 200) {
       const responseDate = await response.json();
@@ -60,12 +60,12 @@ const DashBoard = ({ navigation }) => {
   }, [modelIsVisible, isFocused]);
 
   useEffect(() => {
-    if (authContext.isLogin) {
-      const headers = { "x-auth-token": authContext.token };
+    if (isLogin) {
+      const headers = { "x-auth-token": token };
       eventContext.getSubscribedEventsOfUser(headers);
     }
-  }, [authContext.isLogin]);
-
+  }, [isLogin, navigation, isFocused]);
+  //console.log("-------->subscribedEvent", eventContext.subscribedEvent);
   const headerView = () => {
     return (
       <View style={styles.header}>
@@ -111,7 +111,7 @@ const DashBoard = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
 
-        {authContext.isLogin && (
+        {isLogin && (
           <TouchableOpacity
             style={{ flex: 1 }}
             onPress={() => getEventByUser()}
@@ -162,7 +162,7 @@ const DashBoard = ({ navigation }) => {
           onCloseModal={() => setModelIsVisible(!modelIsVisible)}
         />
       )}
-      {authContext.isLogin && (
+      {isLogin && (
         <ActionButton buttonColor="rgb(192,64,175)" offsetY={0} offsetX={0}>
           <ActionButton.Item
             buttonColor="rgb(192,64,175)"

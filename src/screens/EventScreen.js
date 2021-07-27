@@ -9,6 +9,7 @@ import { EventContext } from "../contexts/EventContext";
 import { AUTH_TAB, DASHBOARD_SCREEN } from "../StringOfApp";
 import { useHttpClient } from "../services/BackEndAPI";
 import AlertIndicator from "../components/formElements/AlertIndicator";
+import globalStyles from "../constant/stylesSheet";
 
 const EventScreen = ({ navigation, route }) => {
   const { isLogin, user, token } = useContext(AuthContext);
@@ -23,11 +24,24 @@ const EventScreen = ({ navigation, route }) => {
     setIsActiveIndicator(true);
     const headers = { "x-auth-token": token };
     const response = await sendRequest(`event/${event.id}`, "DELETE", headers);
-
+    setIsActiveIndicator(false);
     if (response.status === 204) {
       navigation.navigate(DASHBOARD_SCREEN);
     }
+    //  setIsActiveIndicator(false);
+  };
+  const onRegisterHandler = async (event) => {
+    setIsActiveIndicator(true);
+    const headers = { "x-auth-token": token };
+    const response = await sendRequest(
+      `eventRegister/${event._id}`,
+      "POST",
+      headers
+    );
     setIsActiveIndicator(false);
+    if (response.status == 200) {
+      navigation.navigate(DASHBOARD_SCREEN);
+    }
   };
 
   useEffect(() => {
@@ -96,24 +110,22 @@ const EventScreen = ({ navigation, route }) => {
               </View>
             )}
             {isLogin && !eventStatus && user !== event.user && (
-              <View style={styles.register}>
-                <TouchableOpacity
-                  onPress={() =>
-                    console.log("You want Register for this event")
-                  }
-                >
-                  <Text style={styles.registerText}>Register</Text>
-                </TouchableOpacity>
-              </View>
+              //<View style={styles.register}>
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={() => onRegisterHandler(event)}
+              >
+                <Text style={globalStyles.buttonStyle}>Register</Text>
+              </TouchableOpacity>
+              // </View>
             )}
             {!isLogin && (
-              <View style={styles.register}>
-                <TouchableOpacity onPress={() => navigation.navigate(AUTH_TAB)}>
-                  <Text style={styles.loginResterText}>
-                    To Register for event. Please Login or SignUp
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={() => navigation.navigate(AUTH_TAB)}
+              >
+                <Text style={globalStyles.buttonStyle}>LogIn for Register</Text>
+              </TouchableOpacity>
             )}
           </View>
           <View>
@@ -161,9 +173,10 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   registerText: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: "center",
     marginTop: 5,
+    padding: 5,
   },
   eventStatusText: {
     fontSize: 24,
@@ -176,7 +189,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(256, 256, 256, 0.6)",
     padding: 5,
   },
-  loginResterText: {
+  loginRegisterText: {
     fontSize: 15,
     textAlign: "center",
     marginTop: 5,
