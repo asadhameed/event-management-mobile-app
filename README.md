@@ -20,11 +20,11 @@ The application has the following pages: \
 - Give the following project URLs in expo application \
   or Scan QR Code of the following link from expo application
 
-`[Expo link ](https://expo.dev/@asadhameedafridi/sport-event)`
+[Expo link ](https://expo.dev/@asadhameedafridi/sport-event)
 
 ## Setup with Back-end API
 
-`[Back-End Setup ](https://github.com/asadhameed/event-management-backend)`
+[Back-End Setup ](https://github.com/asadhameed/event-management-backend)
 
 ## Error Or Warning
 
